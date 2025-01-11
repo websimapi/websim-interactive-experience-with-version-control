@@ -6,32 +6,49 @@ export class VersionControl {
   }
 
   loadVersionsFromStorage() {
-    const savedVersions = localStorage.getItem('experience-versions');
-    if (savedVersions) {
-      this.versions = JSON.parse(savedVersions);
-      this.currentVersionIndex = this.versions.length - 1;
+    try {
+      const savedVersions = localStorage.getItem('experience-versions');
+      if (savedVersions) {
+        this.versions = JSON.parse(savedVersions);
+        this.currentVersionIndex = this.versions.length - 1;
+      }
+    } catch (error) {
+      console.error('Error loading versions from storage:', error);
+      this.versions = [];
+      this.currentVersionIndex = -1;
     }
   }
 
   saveVersion(state) {
+    if (!state) return null;
+    
     const version = {
       state,
       timestamp: Date.now(),
       description: `Version ${this.versions.length + 1}`,
       changes: this.detectChanges(state)
     };
+    
     this.versions.push(version);
     this.currentVersionIndex = this.versions.length - 1;
-    localStorage.setItem('experience-versions', JSON.stringify(this.versions));
+    
+    try {
+      localStorage.setItem('experience-versions', JSON.stringify(this.versions));
+    } catch (error) {
+      console.error('Error saving version to storage:', error);
+    }
+    
     return version;
   }
 
   detectChanges(newState) {
-    if (this.currentVersionIndex < 0) {
+    if (!newState || this.currentVersionIndex < 0) {
       return ['Initial version'];
     }
 
-    const previousState = this.versions[this.currentVersionIndex].state;
+    const previousState = this.versions[this.currentVersionIndex]?.state;
+    if (!previousState) return ['New version'];
+
     const changes = [];
 
     if (previousState.started !== newState.started) {
@@ -47,18 +64,22 @@ export class VersionControl {
   loadVersion(index) {
     if (index >= 0 && index < this.versions.length) {
       this.currentVersionIndex = index;
-      return this.versions[index].state;
+      return this.versions[index]?.state || null;
     }
     return null;
   }
 
   getVersions() {
-    return this.versions;
+    return this.versions || [];
   }
 
   clearVersions() {
     this.versions = [];
     this.currentVersionIndex = -1;
-    localStorage.removeItem('experience-versions');
+    try {
+      localStorage.removeItem('experience-versions');
+    } catch (error) {
+      console.error('Error clearing versions from storage:', error);
+    }
   }
 }

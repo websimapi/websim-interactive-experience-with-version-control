@@ -60,8 +60,12 @@ class App {
   }
 
   showSaveNotification(version) {
+    if (!version) return;
+    
     const notification = document.getElementById('saveNotification');
-    notification.textContent = `Version saved: ${version.changes.join(', ')}`;
+    if (!notification) return;
+    
+    notification.textContent = `Version saved: ${version.changes?.join(', ') || 'Update saved'}`;
     notification.style.opacity = '1';
     setTimeout(() => {
       notification.style.opacity = '0';
@@ -71,16 +75,31 @@ class App {
   showVersionHistory() {
     const modal = document.getElementById('versionModal');
     const versionList = document.getElementById('versionList');
-    versionList.innerHTML = '';
+    if (!modal || !versionList) return;
 
-    this.versionControl.getVersions().forEach((version, index) => {
+    versionList.innerHTML = '';
+    const versions = this.versionControl.getVersions();
+
+    if (!versions || versions.length === 0) {
+      versionList.innerHTML = '<div class="version-item">No versions saved yet</div>';
+      modal.style.display = 'block';
+      return;
+    }
+
+    versions.forEach((version, index) => {
+      if (!version) return;
+      
       const versionElement = document.createElement('div');
       versionElement.className = 'version-item';
+      
+      const changes = version.changes || ['No changes recorded'];
+      const timestamp = version.timestamp ? new Date(version.timestamp).toLocaleString() : 'Unknown date';
+      
       versionElement.innerHTML = `
         <div class="version-info">
           <span class="version-title">Version ${index + 1}</span>
-          <span class="version-date">${new Date(version.timestamp).toLocaleString()}</span>
-          <div class="version-changes">${version.changes.join(', ')}</div>
+          <span class="version-date">${timestamp}</span>
+          <div class="version-changes">${changes.join(', ')}</div>
         </div>
         <button class="secondary-button" onclick="window.app.loadVersion(${index})">Load</button>
       `;
@@ -104,8 +123,14 @@ class App {
   }
 
   hideVersionHistory() {
-    document.getElementById('versionModal').style.display = 'none';
+    const modal = document.getElementById('versionModal');
+    if (modal) {
+      modal.style.display = 'none';
+    }
   }
 }
 
-window.app = new App();
+// Ensure the app is initialized after the DOM is fully loaded
+document.addEventListener('DOMContentLoaded', () => {
+  window.app = new App();
+});
