@@ -12,7 +12,9 @@ class App {
   }
 
   initializeEventListeners() {
-    document.getElementById('startExperience').addEventListener('click', () => {
+    // Ensure the start button is clearly visible and prominent
+    const startButton = document.getElementById('startExperience');
+    startButton.addEventListener('click', () => {
       this.startExperience();
     });
 
@@ -37,6 +39,15 @@ class App {
     });
   }
 
+  async startExperience() {
+    this.experienceManager.start();
+    await this.audioManager.startAudio();
+  }
+
+  async retryAudio() {
+    await this.audioManager.startAudio();
+  }
+
   loadLastVersion() {
     const versions = this.versionControl.getVersions();
     if (versions.length > 0) {
@@ -46,11 +57,6 @@ class App {
         this.audioManager.startAudio();
       }
     }
-  }
-
-  startExperience() {
-    this.audioManager.startAudio();
-    this.experienceManager.start();
   }
 
   showSaveNotification(version) {

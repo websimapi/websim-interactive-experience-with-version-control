@@ -137,3 +137,34 @@ body {
   justify-content: space-between;
   align-items: center;
 }
+
+.audio-warning {
+  background-color: rgba(231, 76, 60, 0.2);
+  border: 1px solid #e74c3c;
+  padding: 15px;
+  border-radius: 4px;
+  margin-top: 20px;
+}
+
+.audio-warning p {
+  color: #fff;
+  margin: 0 0 10px 0;
+}
+
+#startExperience {
+  font-size: 1.3em;
+  padding: 15px 30px;
+  background-color: var(--accent-color);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+#startExperience:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+}
+
+#startExperience:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}

@@ -5,11 +5,23 @@ export class AudioManager {
     this.fadeInterval = null;
     this.currentVolume = 0;
     this.audio.volume = this.currentVolume;
+    this.initialized = false;
   }
 
-  startAudio() {
-    this.audio.play();
-    this.fadeIn();
+  async startAudio() {
+    try {
+      if (!this.initialized) {
+        await this.audio.play();
+        this.initialized = true;
+      } else {
+        this.audio.play();
+      }
+      this.fadeIn();
+    } catch (error) {
+      console.warn('Audio playback failed:', error);
+      // Add a visual indicator that audio failed to play
+      document.dispatchEvent(new CustomEvent('audio-failed'));
+    }
   }
 
   fadeIn() {
