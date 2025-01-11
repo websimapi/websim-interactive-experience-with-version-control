@@ -113,10 +113,47 @@ body {
 }
 
 .experience-container {
-  min-height: 400px;
+  min-height: 600px;
   background-color: var(--secondary-color);
   border-radius: 8px;
   padding: 20px;
+  overflow: hidden;
+  position: relative;
+}
+
+@keyframes twinkle {
+  0% { opacity: 1; }
+  50% { opacity: 0.3; }
+  100% { opacity: 1; }
+}
+
+@keyframes orbit {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(20px); }
+  100% { transform: translateY(0px); }
+}
+
+.star {
+  animation: twinkle 3s infinite;
+  animation-delay: calc(var(--delay, 0) * 1s);
+}
+
+.planet {
+  animation: float 8s infinite ease-in-out;
+}
+
+.ring {
+  animation: orbit 20s infinite linear;
+  transform-origin: center;
+}
+
+.asteroid {
+  animation: float 4s infinite ease-in-out;
 }
 
 #saveNotification {
