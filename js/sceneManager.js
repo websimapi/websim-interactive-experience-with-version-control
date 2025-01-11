@@ -127,6 +127,72 @@ export class SceneManager {
     this.stars.push(star);
   }
 
+  movePlanet(planetGroup, newX, newY) {
+    const planet = planetGroup.querySelector('circle');
+    const ring = planetGroup.querySelector('ellipse');
+    
+    // Create animation
+    const animate = document.createElementNS("http://www.w3.org/2000/svg", "animate");
+    animate.setAttribute("attributeName", "cx");
+    animate.setAttribute("from", planet.getAttribute("cx"));
+    animate.setAttribute("to", newX);
+    animate.setAttribute("dur", "1s");
+    animate.setAttribute("fill", "freeze");
+    
+    const animateY = document.createElementNS("http://www.w3.org/2000/svg", "animate");
+    animateY.setAttribute("attributeName", "cy");
+    animateY.setAttribute("from", planet.getAttribute("cy"));
+    animateY.setAttribute("to", newY);
+    animateY.setAttribute("dur", "1s");
+    animateY.setAttribute("fill", "freeze");
+    
+    planet.appendChild(animate);
+    planet.appendChild(animateY);
+    
+    if (ring) {
+      const ringAnimateX = animate.cloneNode(true);
+      const ringAnimateY = animateY.cloneNode(true);
+      ring.appendChild(ringAnimateX);
+      ring.appendChild(ringAnimateY);
+    }
+    
+    // Update attributes after animation
+    setTimeout(() => {
+      planet.setAttribute("cx", newX);
+      planet.setAttribute("cy", newY);
+      if (ring) {
+        ring.setAttribute("cx", newX);
+        ring.setAttribute("cy", newY);
+      }
+    }, 1000);
+  }
+
+  randomizeColors() {
+    const colors = [
+      '#ff6b6b', '#4ecdc4', '#ffe66d', '#a8e6cf', '#ff8b94',
+      '#dcedc1', '#a8e6cf', '#ffd3b6', '#ffaaa5', '#ff8b94'
+    ];
+    
+    this.planets.forEach(planetGroup => {
+      const planet = planetGroup.querySelector('circle');
+      const currentColor = planet.getAttribute('fill');
+      let newColor;
+      do {
+        newColor = colors[Math.floor(Math.random() * colors.length)];
+      } while (newColor === currentColor);
+      
+      const animate = document.createElementNS("http://www.w3.org/2000/svg", "animate");
+      animate.setAttribute("attributeName", "fill");
+      animate.setAttribute("from", currentColor);
+      animate.setAttribute("to", newColor);
+      animate.setAttribute("dur", "0.5s");
+      animate.setAttribute("fill", "freeze");
+      
+      planet.appendChild(animate);
+      setTimeout(() => planet.setAttribute("fill", newColor), 500);
+    });
+  }
+
   cleanup() {
     if (this.animationFrame) {
       cancelAnimationFrame(this.animationFrame);
