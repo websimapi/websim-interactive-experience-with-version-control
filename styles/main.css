@@ -138,6 +138,12 @@ body {
   100% { transform: translateY(0px); }
 }
 
+@keyframes cursorPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
 .star {
   animation: twinkle 3s infinite;
   animation-delay: calc(var(--delay, 0) * 1s);
@@ -154,6 +160,11 @@ body {
 
 .asteroid {
   animation: float 4s infinite ease-in-out;
+}
+
+.interactive {
+  cursor: pointer;
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.8));
 }
 
 #saveNotification {

@@ -1,12 +1,14 @@
 import { AudioManager } from './audioManager.js';
 import { VersionControl } from './versionControl.js';
 import { ExperienceManager } from './experienceManager.js';
+import { BotController } from './botController.js';
 
 class App {
   constructor() {
     this.audioManager = new AudioManager();
     this.versionControl = new VersionControl();
     this.experienceManager = new ExperienceManager();
+    this.botController = new BotController(this);
     this.initializeEventListeners();
     this.loadLastVersion();
   }
@@ -42,6 +44,7 @@ class App {
   async startExperience() {
     this.experienceManager.start();
     await this.audioManager.startAudio();
+    this.botController.start(); // Start the bot after audio begins
   }
 
   async retryAudio() {

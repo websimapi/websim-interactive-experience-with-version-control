@@ -107,6 +107,26 @@ export class SceneManager {
     this.animationFrame = requestAnimationFrame(() => this.animate());
   }
 
+  addInteractiveStar(x, y) {
+    const star = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    star.setAttribute("cx", x);
+    star.setAttribute("cy", y);
+    star.setAttribute("r", 3);
+    star.setAttribute("fill", "#fff");
+    star.setAttribute("class", "star interactive");
+    
+    // Add a pulsing animation
+    const animate = document.createElementNS("http://www.w3.org/2000/svg", "animate");
+    animate.setAttribute("attributeName", "r");
+    animate.setAttribute("values", "3;5;3");
+    animate.setAttribute("dur", "2s");
+    animate.setAttribute("repeatCount", "indefinite");
+    
+    star.appendChild(animate);
+    document.getElementById('spaceScene').appendChild(star);
+    this.stars.push(star);
+  }
+
   cleanup() {
     if (this.animationFrame) {
       cancelAnimationFrame(this.animationFrame);
