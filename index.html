@@ -1,0 +1,39 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Experience with Version Control</title>
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+  <div id="app">
+    <div class="control-panel">
+      <div id="saveNotification"></div>
+      <button id="startExperience" class="primary-button">Start Experience</button>
+      <div class="version-controls">
+        <h3>Version Control</h3>
+        <button id="saveVersion" class="secondary-button">Save Current Version</button>
+        <button id="showVersions" class="secondary-button">Show Version History</button>
+      </div>
+    </div>
+    
+    <div id="versionModal" class="modal">
+      <div class="modal-content">
+        <h2>Version History</h2>
+        <div id="versionList"></div>
+        <div class="modal-footer">
+          <button id="clearVersions" class="secondary-button">Clear All Versions</button>
+          <button id="closeModal" class="secondary-button">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="experienceContainer" class="experience-container">
+      <!-- Dynamic content will be inserted here -->
+    </div>
+  </div>
+
+  <script type="module" src="js/main.js"></script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"4c6229722a6346bc8eb5cb0e5eae5d41","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
